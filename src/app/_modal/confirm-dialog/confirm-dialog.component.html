@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Confirmation Dialog</h4>
+  <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <h5>Are you sure to remove the car</h5>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="submit" (click)="modal.dismiss('yes')">Yes</button>
+  <button type="button" class="btn btn-warning" (click)="modal.dismiss('no')">No</button>
+</div>
+

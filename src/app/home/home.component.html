@@ -1,0 +1,124 @@
+<header class="mb-4">
+  <h1 class="text-center py-md-2 pb-md-2" style="background-color: darkcyan;color:#fff;font-size:1.6rem">Automated
+    Parking Lot System</h1>
+</header>
+
+<main *ngIf="!totalSlots">
+  <div class="row mx-0">
+    <form class="col-4 offset-4 jumbotron" (ngSubmit)="setUp()" #f="ngForm">
+      <div *ngIf="formError" class="alert alert-danger">
+        {{formError}}
+      </div>
+      <div class="form-group">
+        <label>Parking Places</label>
+        <input name="totalSlots" type="number" class="form-control" placeholder="Enter Number of parking places"
+               [(ngModel)]="config.total" required
+               #total="ngModel"/>
+        <div *ngIf="total.invalid && (total.dirty || total.touched)"
+             class="alert alert-danger">
+          <div *ngIf="total.errors.required">
+            Name is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Cars Parked</label>
+        <input name="carsParked" type="number" class="form-control" [(ngModel)]="config.parked"
+               placeholder="Enter Number of cars parked" required #parked="ngModel"/>
+        <div *ngIf="parked.invalid && (parked.dirty || parked.touched)"
+             class="alert alert-danger">
+          <div *ngIf="parked.errors.required">
+            Name is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" [disabled]="f.form.invalid">Submit</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<main *ngIf="totalSlots" class="m-2">
+  <section>
+    <div class="row mx-0 ">
+      <div class="col-sm-6">
+        <p>Total Parking Slots - <span class="text-danger">{{totalSlots}}</span></p>
+        <p>Available Parking Slots - <span class="text-danger">{{totalSlots - filledSlots.length}}</span></p>
+      </div>
+      <div class="col-sm-6 text-right">
+        <button type="button" class="btn btn-success" (click)="showTotalMoney()">Query Data</button>
+        <button type="button" class="ml-1 btn btn-danger" (click)="addCar()">Park a Car</button>
+      </div>
+    </div>
+  </section>
+  <section class="mb-4">
+    <form (ngSubmit)="search($event)">
+      <div class="row justify-content-end m-0">
+        <div class="row-cols-0 offset-sm-6 mx-1">
+          <input type="text" class="form-control" name="regNo" [(ngModel)]="searchData.regNo"
+                 placeholder="TYPE REG NO"/>
+        </div>
+        <div class="row-cols-0 mx-1">
+          <select class="form-control" name="color" [(ngModel)]="searchData.color">
+            <option value="">Choose Color</option>
+            <option *ngFor="let option of colors;let i = index" [ngValue]="option">{{option}}</option>
+          </select>
+        </div>
+        <div class="row-cols-0 mx-1">
+          <input type="submit" class="btn btn-info" value="Search"/>
+        </div>
+        <div class="row-cols-0">
+          <input type="button" class="btn btn-secondary" value="Reset" (click)="reset()"/>
+        </div>
+      </div>
+    </form>
+  </section>
+  <section>
+    <div class="table-responsive">
+      <table class="table table-bordered ">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Car No</th>
+          <th scope="col">Color</th>
+          <th scope="col">Slot No</th>
+          <th scope="col">Date Time</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let slot of filledSlots; let i=index">
+          <tr>
+            <th scope="row">{{i + 1}}</th>
+            <td>{{slot.carNo}}</td>
+            <td>{{slot.color}}</td>
+            <td>{{slot.slotNo + 1}}</td>
+            <td>{{slot.dateTime|date:'medium'}}</td>
+            <td>
+              <button class="btn btn-warning" (click)="removeCar(i)">
+                Remove
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Warning</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    No slots available. Try after sometime.
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>
