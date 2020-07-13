@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-query-data',
@@ -7,7 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class QueryDataComponent implements OnInit {
   @Input() data: any;
-  constructor() { }
+  constructor(public modal: NgbActiveModal) { }
 
   ngOnInit(): void {
   }

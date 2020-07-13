@@ -1,3 +1,9 @@
 .table .thead-dark th {
   font-weight: normal;
 }
+
+.heading-color {
+  background-color: darkcyan;
+  color: #fff;
+  font-size: 1.6rem
+}
